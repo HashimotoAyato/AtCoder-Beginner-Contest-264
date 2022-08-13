@@ -1,3 +1,6 @@
+from itertools import combinations
+from re import L
+
 # input
 H1, W1 = map(int, input().split())
 A = []
@@ -8,35 +11,19 @@ B = []
 for h in range(H2):
     B.append(list(map(int, input().split())))
 
-# functions
-def del_col(X, c):
-    x = []
-    for i in range(len(X)):
-        x.append(X[i][:c]+X[i][c+1:])
-    return x
-
-def del_row(X, r):
-    x = X[:r] + X[r+1:]
-    return x
-
 # main
-stack = []
-stack.append(A)
-check = False
-while len(stack) > 0:
-    x = stack.pop()
-    print(len(stack))
-    if x == B:
+h_idx, w_idx = list(range(H1)), list(range(W1))
+for h in combinations(h_idx, H2):
+    for w in combinations(w_idx, W2):
         check = True
-        break
-
-    if len(x) > len(B): 
-        for i in range(len(x)):
-            stack.append(del_row(x,i))
-    if len(x[0]) > len(B[0]):
-        for i in range(len(x[0])):
-            stack.append(del_col(x,i))
-    else:
-        continue
+        for i in range(H2):
+            for j in range(W2):
+                if B[i][j] == A[h[i]][v[j]]:
+                    continue
+                else:
+                    check = False
+                    break
+        if check:
+            break
 
 print('Yes' if check else 'No')
